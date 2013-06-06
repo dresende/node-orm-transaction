@@ -1,0 +1,20 @@
+{
+  "author"      : "Diogo Resende <dresende@thinkdigital.pt>",
+  "name"        : "orm-transaction",
+  "description" : "ORM Transactions",
+  "keywords"    : [
+    "orm",
+    "transaction"
+  ],
+  "version"     : "0.0.1",
+  "license"     : "MIT",
+  "repository"  : "http://github.com/dresende/node-orm-transaction.git",
+  "main"        : "./lib/plugin",
+  "engines"     : {
+    "node"           : "*"
+  },
+  "analyse"     : false,
+  "dependencies": {
+    "orm"      : ">2.0.12"
+  }
+}
