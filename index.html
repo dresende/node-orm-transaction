@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>ORM Transaction by dresende</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>ORM Transaction</h1>
+        <p>This plugin adds transaction support for ORM.</p>
+
+        <p class="view"><a href="https://github.com/dresende/node-orm-transaction">View the Project on GitHub <small>dresende/node-orm-transaction</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/dresende/node-orm-transaction/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/dresende/node-orm-transaction/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/dresende/node-orm-transaction">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a name="orm-transaction-plugin-" class="anchor" href="#orm-transaction-plugin-"><span class="octicon octicon-link"></span></a>ORM Transaction Plugin <a href="https://npmjs.org/package/orm-transaction"><img src="https://badge.fury.io/js/orm-paging.png" alt=""></a>
+</h2>
+
+<p>This plugin adds a transaction function for <a href="http://dresende.github.io/node-orm2">ORM</a>.</p>
+
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p>Of course you need <code>orm</code> to use it. Other than that, no more dependencies.</p>
+
+<h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<div class="highlight"><pre>npm install orm-transaction
+</pre></div>
+
+<h2>
+<a name="dbms-support" class="anchor" href="#dbms-support"><span class="octicon octicon-link"></span></a>DBMS Support</h2>
+
+<p>Any driver supported by ORM is supported by this plugin.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<div class="highlight"><pre><span class="nx">db</span><span class="p">.</span><span class="nx">transaction</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">transaction</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// do your stuff</span>
+    <span class="nx">transaction</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"success!"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">orm</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">"orm"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">transaction</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">"orm-transaction"</span><span class="p">);</span>
+
+<span class="nx">orm</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="s2">"mysql://username:password@host/database"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">db</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+
+    <span class="nx">db</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">transaction</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">"person"</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">name</span>      <span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+        <span class="nx">surname</span>   <span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+        <span class="nx">age</span>       <span class="o">:</span> <span class="nb">Number</span>
+    <span class="p">});</span>
+
+    <span class="nx">db</span><span class="p">.</span><span class="nx">transaction</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Person</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span> <span class="nx">surname</span><span class="o">:</span> <span class="s2">"Doe"</span> <span class="p">}).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">person</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">person</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+        <span class="p">});</span>
+
+        <span class="nx">t</span><span class="p">.</span><span class="nx">commit</span><span class="p">();</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/dresende">dresende</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
