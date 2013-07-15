@@ -16,5 +16,6 @@
   "analyse"     : false,
   "dependencies": {
     "orm"      : ">2.0.12"
+    "debug"    : "~0.7.2"
   }
 }
