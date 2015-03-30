@@ -51,7 +51,11 @@ orm.connect("mysql://username:password@host/database", function (err, db) {
 			person.remove();
 		});
 
-		t.commit();
+		t.commit(function (err) {
+        		if (!err) {
+            			console.log("success!");
+        		}
+    		});
 	});
 });
 ```
