@@ -29,6 +29,43 @@ db.transaction(function (err, transaction) {
 });
 ```
 
+## Pool Example
+
+```js
+var orm = require("orm");
+var transaction = require("orm-transaction");
+
+orm.connect("mysql://username:password@host/database", function (err, db) {
+	if (err) throw err;
+
+	db.use(transaction);
+
+	var Person = db.define("person", {
+		name      : String,
+		surname   : String,
+		age       : Number
+	});
+
+	db.transaction(function (err, t) {
+
+		Person.create({name: "John"}, t.id, function(err, result) {
+
+		Person.find({ surname: "Doe" }).each(function (person) {
+				person.useConnection(t.id).remove(function () {
+						t.commit(function (err) {
+			        		if (!err) {
+			            			console.log("success!");
+			        		}
+			    		});
+					});
+			});
+
+		});
+
+	});
+});
+```
+
 ## Example
 
 ```js
@@ -48,14 +85,15 @@ orm.connect("mysql://username:password@host/database", function (err, db) {
 
 	db.transaction(function (err, t) {
 		Person.find({ surname: "Doe" }).each(function (person) {
-			person.remove();
+			person.remove(function () {
+					t.commit(function (err) {
+		        		if (!err) {
+		            			console.log("success!");
+		        		}
+		    		});
+				});
 		});
 
-		t.commit(function (err) {
-        		if (!err) {
-            			console.log("success!");
-        		}
-    		});
 	});
 });
 ```
