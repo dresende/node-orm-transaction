@@ -60,3 +60,15 @@ orm.connect("mysql://username:password@host/database", function (err, db) {
 });
 ```
 
+#### ES6: await/async
+```js
+await db.transactionAsync(async () => {
+	let persons = await Person.findAsync({ surname: "Doe" })
+
+	for (let person of persons) {
+		await person.removeAsync();
+	}
+});
+```
+**make sure use await in `db.transactionAsync` to catch error when function scope throw error**
+**and make sure function scope use async and await to ensure commit, or catch error throw then to rollback**
